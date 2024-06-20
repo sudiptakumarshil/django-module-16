@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+  Task
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+    <div class="row mt-4">
+      <h5>Tasks</h5>
+      {% for item in data %}
+        <div class="col-md-4 col-lg-4 col-sm-4 text-center">
+          <div class="card" style="width: 100%">
+            <div class="card-header">{{ item.id }}</div>
+            <ul class="list-group list-group-flush">
+              <li class="list-group-item">Title: {{ item.task_title }}</li>
+              <li class="list-group-item">Description: {{ item.task_description }}</li>
+              <li class="list-group-item">Assign Date: {{ item.task_assign_date }}</li>
+              <li class="list-group-item">
+                Categories
+                {% for cate in item.category.all %}
+                  <span class="badge bg-primary">{{ cate.name }}</span>
+                {% endfor %}
+              </li>
+
+              {% if item.is_completed %}
+                <span class="badge bg-success">Task Completed</span>
+              {% else %}
+                <li class="list-group-item d-flex justify-content-center">
+                  <a href="{% url 'task.delete' item.id %}" onclick="return confirm('Are you sure?')" class="btn btn-danger btn-sm">Delete</a> &nbsp;
+                  <a href="{% url 'task.edit' item.id %}" class="btn btn-warning btn-sm">Edit</a>
+                </li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+{% endblock %}
